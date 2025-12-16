@@ -1,0 +1,39 @@
+{
+  "name": "bun-nestjs-nextjs",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["api", "web", "packages/*"],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "dev:api": "bun run --cwd api dev",
+    "dev:web": "bun run --cwd web dev",
+    "build": "bun run build:api && bun run build:web",
+    "build:api": "bun run --cwd api build",
+    "build:web": "bun run --cwd web build",
+    "start": "bun run --filter '*' start",
+    "start:api": "bun run --cwd api start:prod",
+    "start:web": "bun run --cwd web start",
+    "lint": "bun run lint:api && bun run lint:web",
+    "lint:api": "bun run --cwd api lint",
+    "lint:web": "bun run --cwd web lint",
+    "lint:fix": "bun run lint:fix:api && bun run lint:fix:web",
+    "lint:fix:api": "bun run --cwd api lint:fix",
+    "lint:fix:web": "bun run --cwd web lint:fix",
+    "typecheck": "bun run typecheck:api && bun run typecheck:web",
+    "typecheck:api": "bun run --cwd api typecheck",
+    "typecheck:web": "bun run --cwd web typecheck",
+    "format": "bun run format:api && bun run format:web",
+    "format:api": "bun run --cwd api format",
+    "format:web": "bun run --cwd web format",
+    "format:check": "bun run format:check:api && bun run format:check:web",
+    "format:check:api": "bun run --cwd api format:check",
+    "format:check:web": "bun run --cwd web format:check",
+    "test": "bun run test:api && bun run test:web",
+    "test:api": "bun run --cwd api test",
+    "test:web": "bun run --cwd web test",
+    "clean": "rm -rf api/dist web/.next node_modules api/node_modules web/node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

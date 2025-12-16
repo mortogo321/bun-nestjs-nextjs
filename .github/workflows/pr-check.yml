@@ -1,0 +1,84 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  BUN_VERSION: "1.1.38"
+
+jobs:
+  # ================================
+  # PR Quality Gate
+  # ================================
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check for lint errors
+        id: lint
+        run: |
+          echo "### Lint Results" >> $GITHUB_STEP_SUMMARY
+          bun run lint:api 2>&1 | tee lint-api.txt || true
+          bun run lint:web 2>&1 | tee lint-web.txt || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat lint-api.txt >> $GITHUB_STEP_SUMMARY
+          cat lint-web.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Type check
+        id: typecheck
+        run: |
+          echo "### Type Check Results" >> $GITHUB_STEP_SUMMARY
+          cd api && bunx tsc --noEmit 2>&1 | tee ../typecheck-api.txt || true
+          cd ../web && bunx tsc --noEmit 2>&1 | tee ../typecheck-web.txt || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat typecheck-api.txt >> $GITHUB_STEP_SUMMARY || true
+          cat typecheck-web.txt >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Build check
+        run: |
+          echo "### Build Results" >> $GITHUB_STEP_SUMMARY
+          bun run build:api && echo "✅ API build successful" >> $GITHUB_STEP_SUMMARY
+          bun run build:web && echo "✅ Web build successful" >> $GITHUB_STEP_SUMMARY
+
+  # ================================
+  # Changed Files Check
+  # ================================
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      web: ${{ steps.filter.outputs.web }}
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check changed files
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'api/**'
+            web:
+              - 'web/**'
+            docker:
+              - '**/Dockerfile'
+              - 'docker/**'
