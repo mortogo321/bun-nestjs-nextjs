@@ -16,7 +16,7 @@ export function UserList() {
       const data = await fetchUsers();
       setUsers(data);
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Failed to load users. Make sure the API is running.');
     } finally {
       setLoading(false);
@@ -36,7 +36,7 @@ export function UserList() {
       await createUser(newUser);
       setNewUser({ name: '', email: '' });
       await loadUsers();
-    } catch (err) {
+    } catch {
       setError('Failed to create user');
     } finally {
       setSubmitting(false);
@@ -47,7 +47,7 @@ export function UserList() {
     try {
       await deleteUser(id);
       await loadUsers();
-    } catch (err) {
+    } catch {
       setError('Failed to delete user');
     }
   };

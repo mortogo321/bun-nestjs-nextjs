@@ -15,7 +15,7 @@ export function HealthStatus() {
         const data = await fetchHealth();
         setHealth(data);
         setError(null);
-      } catch (err) {
+      } catch {
         setError('API is not reachable. Make sure the API server is running on port 8000.');
         setHealth(null);
       } finally {
