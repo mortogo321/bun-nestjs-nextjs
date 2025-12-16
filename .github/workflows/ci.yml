@@ -97,8 +97,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-build
-          path: web/.next
+          path: web/.next/standalone
           retention-days: 1
+          if-no-files-found: ignore
 
   # ================================
   # Test
