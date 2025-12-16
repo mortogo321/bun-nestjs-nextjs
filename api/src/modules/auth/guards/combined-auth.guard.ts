@@ -42,7 +42,7 @@ export class CombinedAuthGuard implements CanActivate {
     if (apiKey) {
       if (this.authService.validateApiKey(apiKey)) {
         // Set a service user for API key auth
-        (request as any).user = {
+        (request as Request & { user: unknown }).user = {
           sub: 'api-key-user',
           email: 'service@api.local',
           roles: ['service'],
