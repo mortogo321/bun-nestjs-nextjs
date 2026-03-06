@@ -34,6 +34,6 @@
     "clean": "rm -rf api/dist web/.next node_modules api/node_modules web/node_modules"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.3"
   }
 }
