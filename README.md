@@ -1,8 +1,12 @@
 # Bun + NestJS + Next.js Ecosystem
 
-[![CI](https://github.com/your-org/bun-nestjs-nextjs/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/bun-nestjs-nextjs/actions/workflows/ci.yml)
+A monorepo demonstrating a NestJS API and a Next.js frontend running on the Bun runtime, with JWT/API-key authentication, Swagger docs, and Docker Compose environments for local development.
 
-Production-ready monorepo with **NestJS API** and **Next.js 16** on **Bun** runtime.
+## What's Inside
+
+- **API** (`api/`) — NestJS 11 REST API with JWT auth, API-key auth, role-based guards, and Swagger/OpenAPI docs
+- **Web** (`web/`) — Next.js 16 (React 19) frontend
+- Bun workspaces tying both apps together with shared lint/format/typecheck scripts
 
 ## Tech Stack
 
@@ -59,6 +63,16 @@ curl -H "X-API-Key: dev-api-key-1" http://localhost:8000/api/users
 | GET | `/api/users/:id` | Yes | Get user |
 | PUT | `/api/users/:id` | Yes | Update user |
 | DELETE | `/api/users/:id` | Yes | Delete user |
+
+## Project Structure
+
+```
+bun-nestjs-nextjs/
+├── api/          # NestJS REST API (auth, users, health modules)
+├── web/          # Next.js frontend
+├── docker/       # Compose files (development, production)
+└── docs/         # Getting started, Docker, API reference, deployment guides
+```
 
 ## Scripts
 
